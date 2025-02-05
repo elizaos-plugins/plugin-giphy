@@ -8,8 +8,7 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "outDir": "dist",
-        "rootDir": "src",
-        "types": ["lodash"]
+        "rootDir": "src"
     },
     "include": [
         "src/**/*.ts"
