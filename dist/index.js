@@ -66,7 +66,7 @@ ${errorMessages}`
 }
 
 // src/actions/sendGif.ts
-import crypto from "crypto";
+import crypto from "node:crypto";
 var sendGifTemplate = `Given the message, determine if a gif should be sent based on the content.
 If yes, extract relevant keywords or phrases to use as search terms for the gif.
 
@@ -90,7 +90,7 @@ var GIPHY_SEARCH_ENDPOINT = "https://api.giphy.com/v1/gifs/search";
 var sendGif_default = {
   name: "SEND_GIF",
   similes: ["REPLY_WITH_GIF", "GIF_RESPONSE"],
-  validate: async (runtime, message) => {
+  validate: async (runtime, _message) => {
     elizaLogger2.log("\u{1F504} Validating Giphy configuration...");
     try {
       const config = await validateGiphyConfig(runtime);
@@ -104,17 +104,18 @@ var sendGif_default = {
   description: "Respond with a gif based on the user's message",
   handler: async (runtime, message, state, _options, callback) => {
     elizaLogger2.log("\u{1F680} Starting Giphy SEND_GIF handler...");
-    if (!state) {
+    let currentState = state;
+    if (!currentState) {
       elizaLogger2.log("Creating new state...");
-      state = await runtime.composeState(message);
+      currentState = await runtime.composeState(message);
     } else {
       elizaLogger2.log("Updating existing state...");
-      state = await runtime.updateRecentMessageState(state);
+      currentState = await runtime.updateRecentMessageState(currentState);
     }
     try {
       elizaLogger2.log("Composing gif trigger context...");
       const gifContext = composeContext({
-        state,
+        state: currentState,
         template: sendGifTemplate
       });
       elizaLogger2.log("Generating content from context...");
