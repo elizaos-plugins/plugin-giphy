@@ -19,21 +19,22 @@ var debugLog = {
   },
   response: (response) => {
     elizaLogger.log("\u2705 API Response:", {
-      status: response?.status,
-      data: response?.data || "No data"
+      status: response == null ? void 0 : response.status,
+      data: (response == null ? void 0 : response.data) || "No data"
     });
   },
   error: (error) => {
+    var _a, _b, _c, _d, _e;
     elizaLogger.error("\u26D4 Error Details:", {
-      message: error?.message,
+      message: error == null ? void 0 : error.message,
       response: {
-        status: error?.response?.status,
-        data: error?.response?.data
+        status: (_a = error == null ? void 0 : error.response) == null ? void 0 : _a.status,
+        data: (_b = error == null ? void 0 : error.response) == null ? void 0 : _b.data
       },
       config: {
-        url: error?.config?.url,
-        method: error?.config?.method,
-        data: error?.config?.data
+        url: (_c = error == null ? void 0 : error.config) == null ? void 0 : _c.url,
+        method: (_d = error == null ? void 0 : error.config) == null ? void 0 : _d.method,
+        data: (_e = error == null ? void 0 : error.config) == null ? void 0 : _e.data
       }
     });
   },
